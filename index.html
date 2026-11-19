@@ -115,6 +115,32 @@ ul.li li b{color:var(--acc)}
 .nav button:disabled{opacity:.35}
 .nav .lst{flex:.9}
 
+
+/* ---------- 스크롤 본문 ---------- */
+.bar{position:relative;z-index:5;background:var(--bg)}
+.bar .lstb{border:1px solid var(--line);background:var(--card);border-radius:10px;padding:0 12px;height:34px;font-weight:700;font-size:13.5px}
+.page{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:6px 18px 8px;box-shadow:var(--shadow)}
+.chhead{padding:22px 0 20px;border-bottom:1px solid var(--line)}
+.chhead .no{font-size:13px;letter-spacing:.2em;color:var(--acc);font-weight:900}
+.chhead h1{margin:6px 0 6px;font-size:30px;line-height:1.25;font-weight:900;letter-spacing:-.02em}
+.chhead .subt{color:var(--sub);margin:0 0 14px}
+.chhead p{margin:0 0 .9em}
+.seg{padding:24px 0 26px;border-bottom:1px solid var(--line);scroll-margin-top:8px}
+.seg:last-child{border-bottom:0}
+.seg.tip{margin:14px -8px;padding:18px 14px 18px;border:0;border-radius:16px;background:var(--tip-soft)}
+.seg.tip .ex{background:var(--card)}
+.seg.caution{margin:14px -8px;padding:18px 14px 18px;border:0;border-radius:16px;background:var(--warn-soft)}
+.seg.more{padding-top:18px}
+.seg h2{margin:2px 0 14px;font-size:20px;line-height:1.4;font-weight:900;letter-spacing:-.01em}
+.seg h2 .ar{color:var(--acc);padding:0 .15em}
+.seg p{margin:0 0 .95em}
+.seg p:last-child{margin-bottom:0}
+.seg .note{font-size:.92em;color:var(--sub)}
+.endnav{display:flex;gap:10px;padding:18px 0 12px}
+.endnav button{flex:1;min-height:52px;border-radius:14px;border:1px solid var(--line);background:var(--card);font-weight:700}
+.endnav .nx{flex:1.7;background:var(--acc);color:var(--acc-ink);border-color:var(--acc);padding:8px 12px;line-height:1.4}
+.intro{display:block;width:100%;margin:0 0 14px;padding:11px 14px;background:transparent;border:1px dashed var(--line);border-radius:12px;color:var(--sub);font-size:14px;text-align:left}
+
 /* ---------- 목록 시트 ---------- */
 .sheet{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:flex-end;justify-content:center;z-index:20}
 .sheet.on{display:flex}
@@ -140,15 +166,10 @@ ul.li li b{color:var(--acc)}
       <button class="back" id="back" aria-label="목차로">‹ 목차</button>
       <div class="t" id="ttl"></div>
       <button class="fs" id="fs" aria-label="글자 크기">가</button>
-      <span class="pos" id="pos"></span>
+      <button class="lstb" id="lst">목록</button>
     </div>
     <div class="prog"><i id="pg"></i></div>
     <main id="stage"></main>
-    <div class="nav">
-      <button id="prev">‹ 이전</button>
-      <button class="lst" id="lst">목록</button>
-      <button class="next" id="next">다음 ›</button>
-    </div>
   </section>
 </div>
 <div class="sheet" id="sheet"><div class="box" id="sbox"></div></div>
@@ -169,29 +190,24 @@ let CI = 0, K = 0, dir = 1;
 /* ---------- 목차 ---------- */
 function nVideos(ch){ return ch.cards.reduce((a,c)=>a+c.blocks.filter(b=>b.t==='v').length,0); }
 function renderHome(){
-  const pos = store.get('tak.pos');
+  const sv = +store.get('tak.ch');
   let resume = '';
-  if (pos){
-    const m = pos.match(/^(\d+)\/(\d+)$/);
-    if (m && DATA.chapters[+m[1]] && DATA.chapters[+m[1]].cards[+m[2]]){
-      const ch = DATA.chapters[+m[1]], c = ch.cards[+m[2]];
-      if (!(+m[1]===0 && +m[2]===0)){
-        resume = `<button class="resume" data-go="${m[1]}/${m[2]}"><span><small>이어서 보기</small>${esc(ch.title)} · ${+m[2]+1}/${ch.cards.length}</span><span>›</span></button>`;
-      }
-    }
+  if (sv >= 1 && DATA.chapters[sv]){
+    resume = `<button class="resume" data-go="${sv}"><span><small>이어서 보기</small>${sv}장 ${esc(DATA.chapters[sv].title)}</span><span>›</span></button>`;
   }
-  let tiles = DATA.chapters.map((ch,i)=>{
+  const tiles = DATA.chapters.map((ch,i)=>{
+    if (i===0) return '';
     const tags = (ch.tags||[]).map(t=>`<span class="chip">${esc(t.replace(/^기술 /,''))}</span>`).join('');
     const nv = nVideos(ch);
-    return `<button class="tile" data-go="${i}/0"><span class="no">${i===0?'★':i}</span><span class="tx"><b>${esc(ch.title)}</b><span class="s">${esc(ch.sub||'')}</span><span class="m">카드 ${ch.cards.length}장${nv?` · 영상 ${nv}개`:''}</span>${tags?`<span class="chips">${tags}</span>`:''}</span></button>`;
+    return `<button class="tile" data-go="${i}"><span class="no">${i}</span><span class="tx"><b>${esc(ch.title)}</b><span class="s">${esc(ch.sub||'')}</span><span class="m">${nv?`영상 ${nv}개`:'정리'}</span>${tags?`<span class="chips">${tags}</span>`:''}</span></button>`;
   }).join('');
   $('#home').innerHTML = `
-    <div class="hero"><div class="kicker">말을 받아치는 기술 연구 노트</div><h1>탁재훈론</h1><p>장면을 카드 한 장씩 넘겨 보며 공부합니다. 영상을 보기 전에, 상대의 말에서 한 번 멈춰 보세요.</p></div>
-    ${resume}${tiles}
-    <p class="foot">개인 공부용 노트입니다. 영상은 각 방송사와 유튜브 채널의 것이며, 음성인식으로 받아 적은 글이라 틀린 곳이 있을 수 있습니다.<br><a href="book.html">긴 글로 이어서 읽기 ›</a></p>`;
+    <div class="hero"><div class="kicker">말을 받아치는 기술 연구 노트</div><h1>탁재훈론</h1><p>장을 눌러 위아래로 읽습니다. 영상은 상대의 말이 끝난 곳에서 한 번 멈추고, 내 답을 먼저 해 보세요.</p></div>
+    ${resume}<button class="intro" data-go="0">이 노트를 읽는 법 ›</button>${tiles}
+    <p class="foot">개인 공부용 노트입니다. 영상은 각 방송사와 유튜브 채널의 것이며, 음성인식으로 받아 적은 글이라 틀린 곳이 있을 수 있습니다.<br><a href="book.html">8개 장을 한 페이지로 이어 읽기 ›</a></p>`;
 }
 
-/* ---------- 카드 ---------- */
+/* ---------- 본문 ---------- */
 function liHTML(b){
   const tag = b.t === 'ol' ? 'ol' : 'ul';
   return `<${tag} class="li">` + b.items.map(it=>{
@@ -212,65 +228,62 @@ function blockHTML(b){
   return '';
 }
 function titleHTML(t){ return esc(t).replace(/ → /g, '<span class="ar">→</span>'); }
+function hasVid(c){ return c.blocks.some(b=>b.t==='v'); }
 function sceneNo(ch, k){
   let n = 0;
-  for (let i=0;i<=k;i++){ const c = ch.cards[i]; if (c.type==='scene' && c.blocks.some(b=>b.t==='v')) n++; }
+  for (let i=0;i<=k;i++){ const c = ch.cards[i]; if (c.type==='scene' && hasVid(c)) n++; }
   return n;
 }
-function cardHTML(ch, k){
+function kindOf(ch, k){
   const c = ch.cards[k];
-  if (c.type === 'cover'){
-    const tags = (ch.tags||[]).map(t=>`<span class="chip">${esc(t.replace(/^기술 /,''))}</span>`).join('');
-    return `<article class="card cover"><div class="no">${c.num}장</div><h2>${esc(c.title)}</h2><p class="subt">${esc(c.sub||'')}</p>${c.blocks.map(blockHTML).join('')}${tags?`<div class="chips">${tags}</div>`:''}<div class="hint">카드 ${ch.cards.length}장 · 아래 ‘다음’으로 넘겨 보세요</div></article>`;
-  }
-  let label = TYPE[c.type] || '';
-  if (c.type==='scene' && c.blocks.some(b=>b.t==='v')) label = '장면 ' + sceneNo(ch,k);
-  if (c.practice) label = '연습 문제';
+  if (c.practice) return '연습 문제';
+  if (c.type==='scene' && hasVid(c)) return '장면 ' + sceneNo(ch,k);
+  return TYPE[c.type] || '';
+}
+function segHTML(ch, k){
+  const c = ch.cards[k];
   const sec = (c.sec && c.sec !== c.title) ? `<span class="sec">${esc(c.sec)}</span>` : '';
   let body;
   if (c.practice){
     const first = c.blocks[0].t==='p' ? [c.blocks[0]] : [];
     const rest = c.blocks.slice(first.length);
-    body = first.map(blockHTML).join('') + `<button class="reveal" id="rv">내 답을 소리 내어 말한 뒤, 눌러서 정답 보기</button><div class="answer" id="ans" hidden>${rest.map(blockHTML).join('')}</div>`;
+    body = first.map(blockHTML).join('') + `<button class="reveal">내 답을 소리 내어 말한 뒤, 눌러서 정답 보기</button><div class="answer" hidden>${rest.map(blockHTML).join('')}</div>`;
   } else {
     body = c.blocks.map(blockHTML).join('');
   }
   const h2 = c.title ? `<h2>${titleHTML(c.title)}</h2>` : '';
-  return `<article class="card ${c.type}${dir<0?' l':''}"><div class="top"><span class="badge ${c.type}">${esc(label)}</span>${sec}</div>${h2}${body}</article>`;
+  return `<section class="seg ${c.type}" id="s${k}"><div class="top"><span class="badge ${c.type}">${esc(kindOf(ch,k))}</span>${sec}</div>${h2}${body}</section>`;
+}
+function headHTML(ch, ci){
+  const cv = ch.cards[0] && ch.cards[0].type==='cover' ? ch.cards[0] : null;
+  const lead = cv ? cv.blocks.map(blockHTML).join('') : '';
+  const tags = (ch.tags||[]).map(t=>`<span class="chip">${esc(t.replace(/^기술 /,''))}</span>`).join('');
+  return `<header class="chhead">${ci?`<div class="no">${ci}장</div>`:''}<h1>${esc(ch.title)}</h1><p class="subt">${esc(ch.sub||'')}</p>${lead}${tags?`<div class="chips">${tags}</div>`:''}</header>`;
+}
+function pageHTML(ci){
+  const ch = DATA.chapters[ci];
+  let h = headHTML(ch, ci);
+  ch.cards.forEach((c,k)=>{ if (c.type!=='cover') h += segHTML(ch,k); });
+  const last = ci === DATA.chapters.length-1;
+  const prevBtn = ci>1 ? `<button data-go="${ci-1}">‹ ${ci-1}장</button>` : `<button data-go="home">‹ 목차</button>`;
+  const nextBtn = !last ? `<button class="nx" data-go="${ci+1}">다음 · ${ci+1}장 ${esc(DATA.chapters[ci+1].title)} ›</button>` : `<button class="nx" data-go="home">목차로 ›</button>`;
+  return `<div class="page">${h}</div><div class="endnav">${prevBtn}${nextBtn}</div>`;
 }
 
-function show(){
-  const ch = DATA.chapters[CI];
-  const st = $('#stage');
-  st.innerHTML = cardHTML(ch, K);
-  st.scrollTop = 0;
-  $('#ttl').textContent = ch.title;
-  $('#pos').textContent = (K+1) + ' / ' + ch.cards.length;
-  $('#pg').style.width = ((K+1)/ch.cards.length*100) + '%';
-  $('#prev').disabled = (CI===0 && K===0);
-  const last = K === ch.cards.length-1;
-  $('#next').textContent = !last ? '다음 ›' : (CI < DATA.chapters.length-1 ? '다음 장 ›' : '처음으로');
-  const rv = $('#rv');
-  if (rv) rv.onclick = () => { $('#ans').hidden = false; rv.hidden = true; };
-  store.set('tak.pos', CI + '/' + K);
-  try{ history.replaceState(null, '', '#c' + CI + '/' + K); }catch(e){}
-  document.title = ch.title + ' · 탁재훈론';
-}
-function go(ci, k, d){
-  CI = ci; K = k; dir = d || 1;
+function go(ci, keepScroll){
+  CI = ci;
   $('#home').style.display = 'none';
   $('#deck').style.display = 'flex';
-  show();
-}
-function next(){
-  const ch = DATA.chapters[CI];
-  if (K < ch.cards.length-1) go(CI, K+1, 1);
-  else if (CI < DATA.chapters.length-1) go(CI+1, 0, 1);
-  else toHome();
-}
-function prev(){
-  if (K > 0) go(CI, K-1, -1);
-  else if (CI > 0) go(CI-1, DATA.chapters[CI-1].cards.length-1, -1);
+  const st = $('#stage');
+  st.innerHTML = pageHTML(ci);
+  $('#ttl').textContent = (ci?ci+'장 ':'') + DATA.chapters[ci].title;
+  let top = 0;
+  if (keepScroll){ const s = store.get('tak.sc'); if (s && s.split('/')[0]===String(ci)) top = +s.split('/')[1] || 0; }
+  st.scrollTop = top;
+  store.set('tak.ch', ci);
+  try{ history.replaceState(null, '', '#c' + ci); }catch(e){}
+  document.title = DATA.chapters[ci].title + ' · 탁재훈론';
+  upd();
 }
 function toHome(){
   $('#deck').style.display = 'none';
@@ -279,66 +292,66 @@ function toHome(){
   try{ history.replaceState(null, '', location.pathname + location.search); }catch(e){}
   document.title = '탁재훈론';
 }
+function upd(){
+  const st = $('#stage'), m = st.scrollHeight - st.clientHeight;
+  $('#pg').style.width = (m>0 ? Math.min(100, st.scrollTop/m*100) : 0) + '%';
+}
+let scT = 0;
+$('#stage').addEventListener('scroll', () => {
+  upd();
+  clearTimeout(scT);
+  scT = setTimeout(() => store.set('tak.sc', CI + '/' + Math.round($('#stage').scrollTop)), 300);
+}, {passive:true});
 
 /* ---------- 목록 시트 ---------- */
 function openSheet(){
   const ch = DATA.chapters[CI];
-  $('#sbox').innerHTML = `<h3>${esc(ch.title)} · 카드 ${ch.cards.length}장</h3>` + ch.cards.map((c,i)=>{
-    let kind = TYPE[c.type]||'';
-    if (c.type==='scene' && c.blocks.some(b=>b.t==='v')) kind = '장면';
-    if (c.practice) kind = '연습';
-    const t = c.type==='cover' ? c.title : (c.title || c.sec);
-    return `<button data-i="${i}" class="${i===K?'cur':''}"><span class="n">${i+1}</span><span class="k">${esc(kind)}</span><span class="tt">${esc(t.replace(/ → /g,' → '))}</span></button>`;
+  $('#sbox').innerHTML = `<h3>${CI?CI+'장 ':''}${esc(ch.title)}</h3>` + ch.cards.map((c,i)=>{
+    if (c.type==='cover') return '';
+    const t = c.title || c.sec;
+    return `<button data-i="${i}"><span class="k">${esc(kindOf(ch,i))}</span><span class="tt">${esc(t)}</span></button>`;
   }).join('');
   $('#sheet').classList.add('on');
-  const cur = $('#sbox .cur'); if (cur) cur.scrollIntoView({block:'center'});
 }
 function closeSheet(){ $('#sheet').classList.remove('on'); }
 
 /* ---------- 이벤트 ---------- */
 document.addEventListener('click', e => {
   const g = e.target.closest('[data-go]');
-  if (g){ const [a,b] = g.dataset.go.split('/').map(Number); go(a,b,1); return; }
+  if (g){
+    const v = g.dataset.go;
+    if (v === 'home') toHome();
+    else go(+v, g.classList.contains('resume'));
+    return;
+  }
   const s = e.target.closest('#sbox button[data-i]');
-  if (s){ closeSheet(); go(CI, +s.dataset.i, +s.dataset.i >= K ? 1 : -1); return; }
-  if (e.target.id === 'sheet') closeSheet();
+  if (s){ closeSheet(); const el = document.getElementById('s'+s.dataset.i); if (el) el.scrollIntoView({block:'start'}); return; }
+  if (e.target.id === 'sheet'){ closeSheet(); return; }
+  const rv = e.target.closest('.reveal');
+  if (rv){ const a = rv.nextElementSibling; if (a) a.hidden = false; rv.hidden = true; }
 });
-$('#next').onclick = next;
-$('#prev').onclick = prev;
 $('#back').onclick = toHome;
 $('#lst').onclick = openSheet;
 document.addEventListener('keydown', e => {
-  if ($('#deck').style.display !== 'flex') return;
-  if (e.key === 'ArrowRight') next();
-  else if (e.key === 'ArrowLeft') prev();
-  else if (e.key === 'Escape') { if ($('#sheet').classList.contains('on')) closeSheet(); else toHome(); }
+  if (e.key === 'Escape'){ if ($('#sheet').classList.contains('on')) closeSheet(); else if ($('#deck').style.display === 'flex') toHome(); }
 });
-let sx = 0, sy = 0, sOK = false;
-$('#stage').addEventListener('touchstart', e => {
-  const t = e.touches[0]; sx = t.clientX; sy = t.clientY;
-  sOK = !e.target.closest('video,button,input');
-}, {passive:true});
-$('#stage').addEventListener('touchend', e => {
-  if (!sOK) return;
-  const t = e.changedTouches[0], dx = t.clientX - sx, dy = t.clientY - sy;
-  if (Math.abs(dx) > 70 && Math.abs(dy) < 55 && Math.abs(dx) > Math.abs(dy)*1.8){ dx < 0 ? next() : prev(); }
-}, {passive:true});
 
 const SIZES = [16, 18, 20];
 let si = Math.max(0, SIZES.indexOf(+store.get('tak.fs') || 16));
 function applySize(){ document.documentElement.style.setProperty('--fs', SIZES[si] + 'px'); }
-$('#fs').onclick = () => { si = (si+1) % SIZES.length; store.set('tak.fs', SIZES[si]); applySize(); };
+$('#fs').onclick = () => { si = (si+1) % SIZES.length; store.set('tak.fs', SIZES[si]); applySize(); upd(); };
 applySize();
 
 /* ---------- 시작 ---------- */
-(function boot(){
-  const m = location.hash.match(/^#c(\d+)\/(\d+)$/);
-  if (m && DATA.chapters[+m[1]] && DATA.chapters[+m[1]].cards[+m[2]]) go(+m[1], +m[2], 1);
+function route(){
+  const m = location.hash.match(/^#c(\d+)/);
+  if (m && DATA.chapters[+m[1]]) go(+m[1], true);
   else toHome();
-})();
+}
+route();
 window.addEventListener('hashchange', () => {
-  const m = location.hash.match(/^#c(\d+)\/(\d+)$/);
-  if (m && DATA.chapters[+m[1]] && DATA.chapters[+m[1]].cards[+m[2]]){ if (+m[1]!==CI || +m[2]!==K) go(+m[1], +m[2], 1); }
+  const m = location.hash.match(/^#c(\d+)/);
+  if (m && DATA.chapters[+m[1]]){ if (+m[1]!==CI || $('#deck').style.display!=='flex') go(+m[1], false); }
   else if ($('#deck').style.display === 'flex') toHome();
 });
 </script>
