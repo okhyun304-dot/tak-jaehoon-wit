@@ -84,6 +84,15 @@ th,td{border-bottom:1px solid var(--line);padding:10px 8px;text-align:left;verti
 th{font-size:12.5px;color:var(--ts)}
 td:first-child{font-weight:700;white-space:nowrap}
 .foot{margin-top:30px;color:var(--sub);font-size:13px}
+.big{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:18px 0 14px;padding:20px 18px;border-radius:14px;background:var(--acc);color:var(--acc-ink);text-decoration:none}
+.big b{font-size:20px}.big span{font-size:14px;opacity:.9}
+.simple{display:flex;flex-direction:column;border-top:1px solid var(--line)}
+.simple a{display:block;padding:14px 2px;border-bottom:1px solid var(--line);text-decoration:none;color:var(--ink)}
+.simple a b{display:block;font-size:16.5px}.simple a span{display:block;font-size:13.5px;color:var(--sub);margin-top:2px}
+.links{font-size:14px;color:var(--sub);margin-top:20px;line-height:2}
+details.fold{margin:12px 0}details.fold summary{cursor:pointer;color:var(--acc);font-weight:700;font-size:14.5px;padding:8px 0;list-style:none}
+details.fold summary::-webkit-details-marker{display:none}details.fold summary::before{content:"＋ "}details.fold[open] summary::before{content:"－ "}
+.status{grid-template-columns:repeat(3,1fr)}
 @media (max-width:560px){h1{font-size:28px}.cmp{grid-template-columns:1fr}.kv{grid-template-columns:1fr}.kv dt{padding-top:6px}}
 </style></head>
 <body>
@@ -114,31 +123,24 @@ const H=(t,html)=>{$('#ttl').textContent=t;$('#view').innerHTML=html;window.scro
 
 // ---- 첫 화면: 학습 경로
 function vHome(){
- const nNew=SC.filter(s=>s.origin==='신규').length, nV=Object.keys(TR.videos).length;
+ const left=pool('all').filter(x=>stOf(x.id)!=='k'&&stOf(x.id)!=='a').length;
  H('탁재훈론 · 훈련장',
- '<div class="kicker">탁재훈론 · 훈련장</div><h1>보고 끝내지 말고,<br>말해 보고 복기한다</h1>'+
- '<p class="lead">장면 '+SC.length+'개 (기존 '+(SC.length-nNew)+' · 신규 '+nNew+', 신규 영상 '+nV+'편). 상대의 말에서 멈추고, 내 답을 먼저 적고, 실제 반응과 비교합니다.</p>'+
- '<p class="motto">탁재훈이 한 말을 외우는 것이 아니라, 그 말 직전에 무엇을 보고 어떤 가능성을 발견했는지 공부한다.</p>'+
- progBar(SC)+'<p class="meta" style="margin-top:6px">내 진도: 이해함 '+SC.filter(s=>stOf(s.id)==='k').length+' · 연습 필요 '+SC.filter(s=>stOf(s.id)==='p').length+' · 실전 적용 '+SC.filter(s=>stOf(s.id)==='a').length+' / '+SC.length+'</p>'+
- [['1','처음부터 공부하기','책(카드) 1~8장을 순서대로 — 개념과 기존 분석','index.html'],
-  ['2','11가지 기술별 공부','기술마다 설명 · 대표 영상 · 장면 수 · 난이도 · 주의할 점','#/tech'],
-  ['3','실제 상황별 공부','놀림받았을 때, 불리한 질문, 처음 만난 사람, 굳은 분위기…','#/sit'],
-  ['4','영상 장면 모아보기','기술 · 상황 · 결과 · 진도로 걸러 보기','#/list'],
-  ['5','실전 문제 풀기','상대의 말에서 멈추고 → 세 가지 답 → 정답 공개 → 해설','#/drill'],
-  ['6','성공 · 실패 비교하기','비슷한 기술이 통한 장면과 안 통한 장면을 나란히','#/compare'],
-  ['7','같은 사람, 3년 뒤','김예원 2023 ↔ 2026 — 관계가 바뀌면 농담이 어떻게 바뀌나','#/kim'],
-  ['8','원리 · 실패 점검표','분석좌 영상에서 원고가 놓친 이론 7개와, 위트가 실패하는 조건 9개','#/theory']]
- .map(x=>'<a class="tile" href="'+x[3]+'"><span class="no">'+x[0]+'</span><span class="tx"><b>'+x[1]+'</b><span class="s">'+x[2]+'</span></span></a>').join('')+
- '<div class="box"><b>내 답 모아 보기</b><p class="lead" style="margin:4px 0 8px">실전 문제에서 적은 답은 이 기기의 브라우저에만 저장됩니다. 다른 기기로 옮기려면 복사하세요.</p><button class="btn" id="exp">내 답 전부 복사</button> <span id="expm" class="meta"></span></div>'+
- '<p class="foot">원본 영상은 각 방송사·유튜브 채널의 것입니다. 신규 장면은 공식 유튜브 영상을 그 자리에서 재생하며, 대사는 유튜브 자동 자막과 대조했습니다(귀로 다시 확인 전인 장면은 표시). 공부용 · 비공개.</p>');
- $('#exp').onclick=()=>{const out=[];SC.forEach(s=>{const a=ANS[s.id];if(!a)return;const t=[a.a1,a.a2,a.a3].filter(Boolean);if(!t.length)return;out.push('['+s.title+'] '+(SLAB[stOf(s.id)])+'\n- 평범: '+(a.a1||'')+'\n- 위트: '+(a.a2||'')+'\n- 다른 기술: '+(a.a3||''))});
+ '<h1 style="margin-top:28px">탁재훈론 훈련장</h1><p class="lead">상대의 말만 보고, 내 답을 먼저 말해 봅니다. 그다음에 탁재훈의 답을 봅니다.</p>'+
+ '<a class="big" href="#/drill/all?go=1"><b>실전 문제 시작</b><span>남은 문제 '+left+'개 →</span></a>'+
+ '<div class="simple">'+
+  '<a href="#/tech"><b>기술별로 풀기</b><span>소리 비틀기, 틀 깨기… 11가지</span></a>'+
+  '<a href="#/sit"><b>상황별로 풀기</b><span>놀림받았을 때, 불리한 질문을 받았을 때…</span></a>'+
+  '<a href="#/compare"><b>통한 장면 vs 안 통한 장면</b><span>같은 기술, 다른 결과 7쌍</span></a>'+
+ '</div>'+
+ '<p class="links"><a href="#/kim">김예원 3년 비교</a> · <a href="#/theory">실패 점검표</a> · <a href="#/list">전체 장면 '+SC.length+'개</a> · <a href="index.html">책으로 읽기</a> · <a href="#" id="exp">내 답 복사</a></p><p id="expm" class="meta"></p>');
+ $('#exp').onclick=e=>{e.preventDefault();const out=[];SC.forEach(s=>{const a=ANS[s.id];if(!a)return;const t=[a.a1,a.a2,a.a3].filter(Boolean);if(!t.length)return;out.push('['+s.title+']\n- 내 답: '+(a.a2||'')+(a.a1?'\n- 평범: '+a.a1:'')+(a.a3?'\n- 다른 기술: '+a.a3:''))});
   const txt=out.join('\n\n')||'(아직 적은 답이 없습니다)';navigator.clipboard.writeText(txt).then(()=>$('#expm').textContent='복사했습니다',()=>{$('#expm').textContent='복사가 막혔습니다. 아래를 직접 복사하세요.';const ta=document.createElement('textarea');ta.value=txt;ta.style.cssText='width:100%;height:140px';$('#expm').after(ta)})};
 }
 
 // ---- 기술별
 function vTechs(){
- H('11가지 기술','<h1>11가지 기술</h1><p class="lead">장면이 많아질수록 패턴이 보이도록, 기술마다 장면을 모았습니다. 한 장면에 여러 기술이 섞이면 주 기술로 분류하고 보조 기술은 작은 표로 붙였습니다.</p>'+
- TR.techs.map(t=>{const ss=SC.filter(s=>s.main===t.no);return '<a class="tile" href="#/tech/'+encodeURIComponent(t.no)+'"><span class="no">'+t.no+'</span><span class="tx"><b>'+esc(t.name)+'</b><span class="s">'+esc(t.rule)+'</span><span class="m">장면 '+ss.length+'개'+(t.difficulty?' · 난이도 '+t.difficulty:'')+' · 신규 '+ss.filter(s=>s.origin==='신규').length+'</span>'+progBar(ss)+'</span></a>'}).join(''))}
+ H('기술별','<h1 style="margin-top:24px">기술별로 풀기</h1>'+'<div class="simple">'+
+ TR.techs.map(t=>{const ss=SC.filter(s=>s.main===t.no);return '<a href="#/tech/'+encodeURIComponent(t.no)+'"><b>'+t.no+' '+esc(t.name)+'</b><span>'+esc(t.rule)+' · '+ss.length+'문제</span></a>'}).join('')+'</div>')}
 function vTech(no){const t=TN[no];if(!t)return vTechs();const ss=SC.filter(s=>s.main===no), side=SC.filter(s=>s.main!==no&&(s.sub||[]).includes(t.name));
  const rep=ss.find(s=>s.origin==='기존'&&s.mp4)||ss[0];
  H(no+' '+t.name,'<div class="kicker">기술 '+no+'</div><h1>'+esc(t.name)+'</h1><p class="motto">'+esc(t.rule)+'</p>'+
@@ -152,8 +154,8 @@ function vTech(no){const t=TN[no];if(!t)return vTechs();const ss=SC.filter(s=>s.
 
 // ---- 상황별
 function sitScenes(name){const tech=new Set(TR.sit_techs[name]||[]);const own=SC.filter(s=>(s.situations||[]).includes(name));const by=SC.filter(s=>!own.includes(s)&&tech.has(s.main)&&s.origin==='기존');return {own,by,tech:[...tech]}}
-function vSits(){H('상황별','<h1>실제 상황별</h1><p class="lead">기술 이름보다 "지금 무슨 상황인가"에서 출발합니다. 상황을 고르면 처방(기술)과 장면이 나옵니다.</p>'+
- TR.sit_order.map((n,i)=>{const r=sitScenes(n);return '<a class="tile" href="#/sit/'+i+'"><span class="no">'+(i+1)+'</span><span class="tx"><b>'+esc(n)+'</b><span class="m">실제 장면 '+r.own.length+' · 처방 기술 장면 '+r.by.length+'</span></span></a>'}).join(''))}
+function vSits(){H('상황별','<h1 style="margin-top:24px">상황별로 풀기</h1>'+
+ '<div class="simple">'+TR.sit_order.map((n,i)=>{const r=sitScenes(n);return '<a href="#/sit/'+i+'"><b>'+esc(n)+'</b><span>'+(r.own.length+r.by.length)+'문제</span></a>'}).join('')+'</div>')}
 function vSit(i){const n=TR.sit_order[i];if(!n)return vSits();const r=sitScenes(n);const rx=TR.situations.filter(x=>x.name===n);
  H(n,'<div class="kicker">상황</div><h1>'+esc(n)+'</h1>'+
  rx.map(x=>'<div class="box"><b>처방</b> '+esc(x.rx)+(x.ex?'<p class="meta" style="margin:6px 0 0">써먹는 예(지어낸 것): '+esc(x.ex)+'</p>':'')+'</div>').join('')+
@@ -179,49 +181,47 @@ function vList(){const q=new URLSearchParams(location.hash.split('?')[1]||'');
 let YTP=null,ytReady=null,watch=0;
 function loadYT(){if(ytReady)return ytReady;ytReady=new Promise(r=>{window.onYouTubeIframeAPIReady=r;const s=document.createElement('script');s.src='https://www.youtube.com/iframe_api';document.head.appendChild(s)});return ytReady}
 function videoHTML(s){
- if(s.src==='yt')return '<div class="vbox" id="vb"><img src="https://i.ytimg.com/vi/'+s.vid+'/hqdefault.jpg" alt=""><button class="pl" id="vplay"><span>▶ 상대의 말부터 재생 ('+mmss(s.start)+')</span></button></div>'+
-  '<p class="vnote" id="vn">답이 나오는 '+mmss(s.answer)+' 직전에 자동으로 멈추도록 해 두었습니다. 기기에 따라 늦거나 안 멈출 수 있으니, 그때는 직접 멈추세요. · <a href="'+esc(s.url)+'" target="_blank" rel="noopener">유튜브에서 보기 ↗</a></p>';
+ if(s.src==='yt')return '<div class="vbox" id="vb"><img src="https://i.ytimg.com/vi/'+s.vid+'/hqdefault.jpg" alt=""><span class="pl"><span>불러오는 중…</span></span></div>'+
+  '<p class="vnote" id="vn">'+mmss(s.answer)+'에 정답이 나옵니다. 그 직전에 멈추게 해 두었지만, 안 멈추면 직접 멈추세요.</p>';
  if(s.mp4)return '<div class="vbox"><video controls playsinline preload="none" poster="'+esc(s.poster)+'" src="'+esc(s.mp4)+'"></video></div><p class="vnote">상대가 말을 꺼내기 몇 초 전부터 시작합니다. 탁재훈의 말이 나오기 전에 직접 멈추세요.</p>';
  return ''}
 function mountYT(s,stop){const vb=$('#vb');if(!vb)return;vb.innerHTML='<div id="ytp"></div>';
  loadYT().then(()=>{YTP=new YT.Player('ytp',{videoId:s.vid,playerVars:{start:Math.floor(s.start),playsinline:1,rel:0,autoplay:1},events:{
   onReady:e=>e.target.playVideo(),
-  onStateChange:e=>{clearInterval(watch);if(e.data===YT.PlayerState.PLAYING&&stop()){watch=setInterval(()=>{try{const t=YTP.getCurrentTime();if(t>=s.answer-0.4&&t<s.answer+3&&stop()){YTP.pauseVideo();clearInterval(watch);stopped=true;const n=$('#vn');if(n){n.classList.add('on');n.innerHTML='여기서 멈췄습니다 ('+mmss(t)+'). 나라면 뭐라고 할까요? 답을 적은 뒤 「정답 보기」를 누르세요. 다시 재생하면 끝까지 이어집니다.'}}}catch(x){}},150)}}}})})}
+  onStateChange:e=>{clearInterval(watch);if(e.data===YT.PlayerState.PLAYING&&stop()){watch=setInterval(()=>{try{const t=YTP.getCurrentTime();if(t>=s.answer-0.4&&t<s.answer+3&&stop()){YTP.pauseVideo();clearInterval(watch);stopped=true;const n=$('#vn');if(n){n.classList.add('on');n.innerHTML='여기서 멈췄습니다. 내 답을 적고 「정답 보기」를 누르세요.'}}}catch(x){}},150)}}}})})}
 let stopped=false;
 function vScene(id,drill){const s=BY[id];if(!s)return vHome();stopped=false;
- const before=s.lines.slice(0,s.punch), punch=s.lines[s.punch], after=s.lines.slice(s.punch+1);
+ const before=s.lines.slice(0,s.punch), punch=s.lines[s.punch], after=s.lines.slice(s.punch+1,s.punch+3);
  const a=ANS[s.id]||{};
  const li=(l,cls)=>'<li class="'+cls+'">'+(l.who?'<small>'+esc(l.who)+'</small>':'')+esc(l.text)+'</li>';
- const nextId=drill?pickNext(drill,s.id):null;
- H(drill?'실전 문제':s.title,
- (drill?'<div class="kicker">실전 문제 · '+(drill==='all'?'전체':drill+' '+esc(TN[drill]?.name||''))+'</div>':'')+'<h2 style="margin-top:18px" id="stitle">'+(drill?'이 상황에서 나라면?':esc(s.title))+'</h2>'+(drill?'<p class="meta" style="margin:0">'+esc(s.program||s.chname||'')+' — 제목과 기술은 정답을 본 뒤 공개됩니다</p>':chips(s))+
- '<div class="step"><b>1</b>당시 상황</div><div class="box">'+esc(s.context||'—')+(s.relation?'<p class="meta" style="margin:6px 0 0">관계: '+esc(s.relation)+'</p>':'')+'</div>'+
- '<div class="step"><b>2</b>상대의 직전 말</div>'+(before.length?'<ul class="lines">'+before.map(l=>li(l,'')).join('')+'</ul>':'<p class="lead">이 장면은 탁재훈이 먼저 말을 꺼냅니다. 위 상황만 보고, 나라면 무슨 말로 시작할지 생각해 보세요.</p>')+
- '<div class="step"><b>3</b>나라면 뭐라고 할까?</div><p class="ask">'+esc(s.prompt||'여기서 멈추세요. 내가 저 자리에 있었다면 뭐라고 받았을까요?')+'</p>'+
- '<div class="step"><b>4</b>내 답 — 세 가지로</div><div class="ans">'+
- '<label for="a1">평범한 반응</label><textarea id="a1" placeholder="보통 사람이라면…">'+esc(a.a1||'')+'</textarea>'+
- '<label for="a2">위트 있는 반응</label><textarea id="a2" placeholder="전제를 바꾸거나, 단어를 집거나…">'+esc(a.a2||'')+'</textarea>'+
- '<label for="a3">다른 기술을 쓴 반응</label><textarea id="a3" placeholder="①~⑪ 중 다른 기술로">'+esc(a.a3||'')+'</textarea></div>'+
- '<button class="btn pri wide" id="reveal">정답 보기 — 실제 반응</button>'+
+ const pts=(s.points||[]).length?s.points:[];
+ H(drill?'실전 문제':'장면',
+ '<p class="meta" style="margin:18px 0 4px">'+esc(s.src==='yt'?s.program+' '+s.episode:s.chname)+'</p>'+
+ (drill?'':'<h2 style="margin:0 0 6px">'+esc(s.title)+'</h2>')+
+ '<div class="box"><p style="margin:0 0 10px;color:var(--sub);font-size:15px">'+esc(s.context||'')+'</p>'+
+  (before.length?'<ul class="lines">'+before.map(l=>li(l,'')).join('')+'</ul>':'<p style="margin:0">탁재훈이 먼저 말을 꺼내는 장면입니다. 나라면 무슨 말로 시작할까요?</p>')+'</div>'+
+ '<p class="ask">나라면 뭐라고 할까?</p>'+
+ '<div class="ans"><textarea id="a2" placeholder="떠오르는 대로 한 줄">'+esc(a.a2||'')+'</textarea>'+
+ '<details class="fold"'+(a.a1||a.a3?' open':'')+'><summary>세 가지로 나눠 써 보기</summary><label for="a1">평범한 반응</label><textarea id="a1">'+esc(a.a1||'')+'</textarea><label for="a3">다른 기술을 쓴 반응</label><textarea id="a3">'+esc(a.a3||'')+'</textarea></details></div>'+
+ (s.src==='yt'||s.mp4?'<details class="fold" id="vdet"><summary>영상으로 보기'+(s.src==='yt'?' (정답 직전에 멈춤)':'')+'</summary>'+videoHTML(s)+'</details>':'')+
+ '<button class="btn pri wide" id="reveal">정답 보기</button>'+
  '<div id="rv" class="hide">'+
-  '<div class="step"><b>5</b>실제 반응</div><ul class="lines">'+(punch?li(punch,'tak'):'')+after.map(l=>li(l,'aft')).join('')+'</ul>'+
-  (s.reaction?'<p class="meta">그 뒤: '+esc(s.reaction)+'</p>':'')+
- '</div>'+
- (s.src==='yt'||s.mp4?'<div class="step"><b>6</b>영상</div>'+videoHTML(s):'')+
- '<div id="rv2" class="hide">'+
-  '<div class="step"><b>7</b>기술 해설</div>'+(drill?chips(s):'')+'<div class="box">'+
-   (s.material?'<dl class="kv"><dt>재료</dt><dd>'+esc(s.material)+'</dd><dt>바꾼 것</dt><dd>'+esc(s.shift)+'</dd><dt>왜 통했나</dt><dd>'+esc(s.why)+'</dd>'+(s.timing?'<dt>타이밍</dt><dd>'+esc(s.timing)+'</dd>':'')+(s.length?'<dt>길이</dt><dd>'+esc(s.length)+(s.laugh?' · '+esc(s.laugh):'')+'</dd>':'')+'</dl>':'<p style="margin:0">'+esc(s.why||'—')+'</p>')+
-   ((s.points||[]).length?'<ul class="pts">'+s.points.map(p=>'<li>'+esc(p)+'</li>').join('')+'</ul>':'')+'</div>'+
-  ((s.when_ok||s.when_not||s.safety)?'<div class="step"><b>8</b>주의</div><div class="box warn">'+(s.when_ok?'<p style="margin:0 0 6px"><b>통하는 때</b> '+esc(s.when_ok)+'</p>':'')+(s.when_not?'<p style="margin:0"><b>쓰지 말 때</b> '+esc(s.when_not)+'</p>':'')+(s.safety&&s.safety!=='안전'?'<p class="meta" style="margin:6px 0 0">수위: '+esc(s.safety)+'</p>':'')+'</div>':'')+
- '</div>'+
- '<div class="step"><b>✓</b>내 진도</div><div class="status">'+Object.entries(SLAB).map(([k,v])=>'<button data-st="'+k+'" class="'+(stOf(s.id)===k?'on':'')+'">'+v+'</button>').join('')+'</div>'+
- (drill?'<a class="btn pri wide" href="#/drill/'+encodeURIComponent(drill)+'?after='+s.id+'">다음 문제 →</a>':'')+
- (s.main&&!drill?'<a class="btn wide" href="#/tech/'+encodeURIComponent(s.main)+'">'+s.main+' '+esc(TN[s.main].name)+' 다른 장면</a>':'')+
- '<p class="meta">'+(s.src==='yt'?esc(s.program)+' '+esc(s.episode)+' · 「'+esc(s.vtitle)+'」<br>원본 '+mmss(s.start)+' 시작 · '+mmss(s.answer)+' 답 · '+mmss(s.end)+' 끝 · 대사: '+esc(s.quote_check)+' · 화자: '+esc(s.speaker_conf)+'<br><a href="'+esc(s.url)+'" target="_blank" rel="noopener">'+esc(s.meta.source_url)+'</a>':'기존 장면 · '+esc(s.chname)+(s.spec?' · 클립 '+esc(s.spec):'')+' · 대사: Whisper 전사 대조')+'</p>');
+  (drill?'<h2 style="margin:22px 0 4px">'+esc(s.title)+'</h2>':'<div style="height:14px"></div>')+
+  '<ul class="lines">'+(punch?li(punch,'tak'):'')+after.map(l=>li(l,'aft')).join('')+'</ul>'+
+  (s.main?'<p style="margin:14px 0 4px;font-weight:700">'+s.main+' '+esc(TN[s.main].name)+'</p>':'')+
+  (pts.length?'<ul class="pts">'+pts.slice(0,3).map(p=>'<li>'+esc(p)+'</li>').join('')+'</ul>':(s.why?'<p style="margin:0">'+esc(s.why)+'</p>':''))+
+  '<details class="fold"><summary>자세한 해설 · 주의할 점</summary>'+
+   (s.material?'<dl class="kv"><dt>재료</dt><dd>'+esc(s.material)+'</dd><dt>바꾼 것</dt><dd>'+esc(s.shift)+'</dd><dt>왜 통했나</dt><dd>'+esc(s.why)+'</dd>'+(s.timing?'<dt>타이밍</dt><dd>'+esc(s.timing)+'</dd>':'')+(s.reaction?'<dt>그 뒤</dt><dd>'+esc(s.reaction)+'</dd>':'')+'</dl>':'')+
+   ((s.when_ok||s.when_not)?'<div class="box warn">'+(s.when_ok?'<p style="margin:0 0 6px"><b>통하는 때</b> '+esc(s.when_ok)+'</p>':'')+(s.when_not?'<p style="margin:0"><b>쓰지 말 때</b> '+esc(s.when_not)+'</p>':'')+'</div>':'')+
+   '<p class="meta">'+(s.src==='yt'?'원본 '+mmss(s.start)+'~'+mmss(s.end)+' · 대사: 유튜브 자동 자막 대조 · 화자: '+esc(s.speaker_conf)+' · <a href="'+esc(s.url)+'" target="_blank" rel="noopener">유튜브 ↗</a>':'기존 장면 · '+esc(s.chname))+'</p>'+
+  '</details>'+
+  '<div class="status">'+[['k','알겠다'],['p','다시 연습'],['a','실전에서 써 봄']].map(([k,v])=>'<button data-st="'+k+'" class="'+(stOf(s.id)===k?'on':'')+'">'+v+'</button>').join('')+'</div>'+
+  (drill?'<a class="btn pri wide" href="#/drill/'+encodeURIComponent(drill)+'?after='+s.id+'">다음 문제 →</a>':'')+
+ '</div>');
  const save=()=>{ANS[s.id]={a1:$('#a1').value,a2:$('#a2').value,a3:$('#a3').value,d:Date.now()};store.set('tak.tr.ans',ANS)};
  ['a1','a2','a3'].forEach(i=>$('#'+i).addEventListener('input',save));
- $('#reveal').onclick=()=>{if(drill)$('#stitle').textContent=s.title;$('#rv').classList.remove('hide');$('#rv2').classList.remove('hide');$('#reveal').classList.add('hide');stopped=true;if(stOf(s.id)==='u'){setSt(s.id,'k');document.querySelectorAll('.status button').forEach(b=>b.classList.toggle('on',b.dataset.st==='k'))}};
- const vp=$('#vplay');if(vp)vp.onclick=()=>mountYT(s,()=>!stopped&&$('#rv').classList.contains('hide'));
+ $('#reveal').onclick=()=>{$('#rv').classList.remove('hide');$('#reveal').classList.add('hide');stopped=true;if(stOf(s.id)==='u'){setSt(s.id,'k');document.querySelectorAll('.status button').forEach(b=>b.classList.toggle('on',b.dataset.st==='k'))}$('#rv').scrollIntoView({behavior:'smooth',block:'start'})};
+ const vd=$('#vdet');if(vd)vd.addEventListener('toggle',()=>{if(vd.open&&s.src==='yt'&&!document.querySelector('#vb iframe'))mountYT(s,()=>!stopped&&$('#rv').classList.contains('hide'))});
  document.querySelectorAll('.status button').forEach(b=>b.onclick=()=>{setSt(s.id,b.dataset.st);document.querySelectorAll('.status button').forEach(x=>x.classList.toggle('on',x===b))});
 }
 // 실전 문제: 연습 필요 → 안 봄 → 나머지, 신규·별 많은 순
