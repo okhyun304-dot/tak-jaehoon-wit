@@ -181,6 +181,7 @@ function vList(){const q=new URLSearchParams(location.hash.split('?')[1]||'');
 let YTP=null,ytReady=null,watch=0;
 function loadYT(){if(ytReady)return ytReady;ytReady=new Promise(r=>{window.onYouTubeIframeAPIReady=r;const s=document.createElement('script');s.src='https://www.youtube.com/iframe_api';document.head.appendChild(s)});return ytReady}
 function videoHTML(s){
+ if(s.mp4&&s.clip_a!=null)return '<div class="vbox"><video id="cv" controls playsinline preload="metadata" poster="'+esc(s.poster)+'" src="'+esc(s.mp4)+'"></video></div><p class="vnote" id="vn">정답 직전에 멈춥니다. 다시 누르면 이어서 재생됩니다. · <a href="'+esc(s.url)+'" target="_blank" rel="noopener">원본 유튜브 ↗</a></p>';
  if(s.src==='yt')return '<div class="vbox" id="vb"><img src="https://i.ytimg.com/vi/'+s.vid+'/hqdefault.jpg" alt=""><span class="pl"><span>불러오는 중…</span></span></div>'+
   '<p class="vnote" id="vn">'+mmss(s.answer)+'에 정답이 나옵니다. 그 직전에 멈추게 해 두었지만, 안 멈추면 직접 멈추세요.</p>';
  if(s.mp4)return '<div class="vbox"><video controls playsinline preload="none" poster="'+esc(s.poster)+'" src="'+esc(s.mp4)+'"></video></div><p class="vnote">상대가 말을 꺼내기 몇 초 전부터 시작합니다. 탁재훈의 말이 나오기 전에 직접 멈추세요.</p>';
@@ -213,7 +214,7 @@ function vScene(id,drill){const s=BY[id];if(!s)return vHome();stopped=false;
   '<details class="fold"><summary>자세한 해설 · 주의할 점</summary>'+
    (s.material?'<dl class="kv"><dt>재료</dt><dd>'+esc(s.material)+'</dd><dt>바꾼 것</dt><dd>'+esc(s.shift)+'</dd><dt>왜 통했나</dt><dd>'+esc(s.why)+'</dd>'+(s.timing?'<dt>타이밍</dt><dd>'+esc(s.timing)+'</dd>':'')+(s.reaction?'<dt>그 뒤</dt><dd>'+esc(s.reaction)+'</dd>':'')+'</dl>':'')+
    ((s.when_ok||s.when_not)?'<div class="box warn">'+(s.when_ok?'<p style="margin:0 0 6px"><b>통하는 때</b> '+esc(s.when_ok)+'</p>':'')+(s.when_not?'<p style="margin:0"><b>쓰지 말 때</b> '+esc(s.when_not)+'</p>':'')+'</div>':'')+
-   '<p class="meta">'+(s.src==='yt'?'원본 '+mmss(s.start)+'~'+mmss(s.end)+' · 대사: 유튜브 자동 자막 대조 · 화자: '+esc(s.speaker_conf)+' · <a href="'+esc(s.url)+'" target="_blank" rel="noopener">유튜브 ↗</a>':'기존 장면 · '+esc(s.chname))+'</p>'+
+   '<p class="meta">'+(s.src==='yt'?'원본 '+mmss(s.start)+'~'+mmss(s.end)+' · 대사: '+esc(s.quote_check)+' · 화자: '+esc(s.speaker_conf)+' · <a href="'+esc(s.url)+'" target="_blank" rel="noopener">유튜브 ↗</a>':'기존 장면 · '+esc(s.chname))+'</p>'+
   '</details>'+
   '<div class="status">'+[['k','알겠다'],['p','다시 연습'],['a','실전에서 써 봄']].map(([k,v])=>'<button data-st="'+k+'" class="'+(stOf(s.id)===k?'on':'')+'">'+v+'</button>').join('')+'</div>'+
   (drill?'<a class="btn pri wide" href="#/drill/'+encodeURIComponent(drill)+'?after='+s.id+'">다음 문제 →</a>':'')+
@@ -221,7 +222,8 @@ function vScene(id,drill){const s=BY[id];if(!s)return vHome();stopped=false;
  const save=()=>{ANS[s.id]={a1:$('#a1').value,a2:$('#a2').value,a3:$('#a3').value,d:Date.now()};store.set('tak.tr.ans',ANS)};
  ['a1','a2','a3'].forEach(i=>$('#'+i).addEventListener('input',save));
  $('#reveal').onclick=()=>{$('#rv').classList.remove('hide');$('#reveal').classList.add('hide');stopped=true;if(stOf(s.id)==='u'){setSt(s.id,'k');document.querySelectorAll('.status button').forEach(b=>b.classList.toggle('on',b.dataset.st==='k'))}$('#rv').scrollIntoView({behavior:'smooth',block:'start'})};
- const vd=$('#vdet');if(vd)vd.addEventListener('toggle',()=>{if(vd.open&&s.src==='yt'&&!document.querySelector('#vb iframe'))mountYT(s,()=>!stopped&&$('#rv').classList.contains('hide'))});
+ const cv=$('#cv');if(cv){const stopAt=s.answer-s.clip_a-0.3;let once=false;cv.addEventListener('timeupdate',()=>{if(!once&&!stopped&&cv.currentTime>=stopAt&&cv.currentTime<stopAt+2){cv.pause();once=true;const n=$('#vn');n.classList.add('on');n.textContent='여기서 멈췄습니다. 내 답을 적고 「정답 보기」를 누르세요.'}})}
+ const vd=$('#vdet');if(vd)vd.addEventListener('toggle',()=>{if(vd.open&&!cv&&s.src==='yt'&&!document.querySelector('#vb iframe'))mountYT(s,()=>!stopped&&$('#rv').classList.contains('hide'))});
  document.querySelectorAll('.status button').forEach(b=>b.onclick=()=>{setSt(s.id,b.dataset.st);document.querySelectorAll('.status button').forEach(x=>x.classList.toggle('on',x===b))});
 }
 // 실전 문제: 연습 필요 → 안 봄 → 나머지, 신규·별 많은 순
