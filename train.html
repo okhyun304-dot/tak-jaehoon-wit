@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>탁재훈론 · 훈련장</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f1ede3;--card:#fffdf8;--ink:#1d2a2e;--sub:#5b6a6e;--line:#e3ddcf;--acc:#0b5563;--acc-soft:#dcebee;--acc-ink:#fff;--tip:#a85a08;--tip-soft:#fcefd9;--warn:#9a3412;--warn-soft:#fae8df;--ok:#2f6b3a;--ok-soft:#e1efe1;--ts:#8a969a;--q:#0b5563}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#111719;--card:#1a2326;--ink:#e7ecec;--sub:#9fb0b4;--line:#2a3639;--acc:#6fc3d1;--acc-soft:#1e3a40;--acc-ink:#0c1a1d;--tip:#f0b25f;--tip-soft:#33291a;--warn:#f0997a;--warn-soft:#33201a;--ok:#8fd19a;--ok-soft:#1c3020;--ts:#78888c;--q:#6fc3d1}}
+:root[data-theme="dark"]{--bg:#111719;--card:#1a2326;--ink:#e7ecec;--sub:#9fb0b4;--line:#2a3639;--acc:#6fc3d1;--acc-soft:#1e3a40;--acc-ink:#0c1a1d;--tip:#f0b25f;--tip-soft:#33291a;--warn:#f0997a;--warn-soft:#33201a;--ok:#8fd19a;--ok-soft:#1c3020;--ts:#78888c;--q:#6fc3d1}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Noto Sans KR',system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;font-size:16px;line-height:1.75;word-break:keep-all;overflow-wrap:break-word}
+button,select,textarea,input{font:inherit;color:inherit}button{cursor:pointer}
+a{color:var(--acc)}
+.app{max-width:760px;margin:0 auto;padding:0 16px calc(60px + env(safe-area-inset-bottom))}
+.bar{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:8px;padding:calc(10px + env(safe-area-inset-top)) 0 10px;background:var(--bg);border-bottom:1px solid var(--line)}
+.bar .back{border:0;background:transparent;padding:8px 6px;font-weight:700;color:var(--acc);min-height:44px}
+.bar .t{flex:1;min-width:0;font-weight:700;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar a.home{font-size:13px;color:var(--sub);text-decoration:none;padding:8px 4px}
+h1{font-size:34px;line-height:1.2;font-weight:900;letter-spacing:-.02em;margin:24px 0 6px}
+h2{font-size:22px;line-height:1.35;margin:26px 0 8px}
+h3{font-size:17px;margin:20px 0 6px}
+.kicker{font-size:12px;letter-spacing:.18em;color:var(--acc);font-weight:700}
+.lead{color:var(--sub);margin:0 0 14px;font-size:15.5px}
+.motto{border-left:3px solid var(--acc);padding:4px 0 4px 12px;margin:14px 0 18px;font-weight:700}
+.tile{display:flex;gap:14px;width:100%;margin:0 0 10px;padding:14px;background:var(--card);border:1px solid var(--line);border-radius:14px;text-align:left;text-decoration:none;color:var(--ink);align-items:flex-start}
+.tile .no{flex:0 0 42px;height:42px;border-radius:10px;background:var(--acc-soft);color:var(--acc);display:grid;place-items:center;font-weight:900;font-size:17px}
+.tile .tx{min-width:0;flex:1}.tile b{display:block;font-size:16.5px;line-height:1.4}.tile .s{display:block;color:var(--sub);font-size:13.5px;line-height:1.55;margin-top:2px}
+.tile .m{display:block;color:var(--ts);font-size:12.5px;margin-top:4px}
+.chips{display:flex;flex-wrap:wrap;gap:5px;margin:6px 0 0}
+.chip{font-size:12px;line-height:1;padding:5px 8px;border-radius:6px;background:var(--acc-soft);color:var(--acc);font-weight:500;white-space:nowrap}
+.chip.sub{background:transparent;border:1px solid var(--line);color:var(--sub)}
+.chip.fail{background:var(--warn-soft);color:var(--warn)}.chip.rec{background:var(--tip-soft);color:var(--tip)}.chip.okc{background:var(--ok-soft);color:var(--ok)}
+.chip.new{background:var(--ink);color:var(--bg)}
+.prog{display:flex;height:6px;border-radius:3px;overflow:hidden;background:var(--line);margin-top:8px}
+.prog i{display:block;height:100%}
+.st-u{background:var(--line)}.st-k{background:var(--ok)}.st-p{background:var(--tip)}.st-a{background:var(--acc)}
+.box{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin:10px 0}
+.step{display:flex;gap:10px;align-items:baseline;font-size:12.5px;font-weight:700;color:var(--acc);letter-spacing:.06em;margin:20px 0 6px}
+.step b{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--acc);color:var(--acc-ink);font-size:12px}
+.lines{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.lines li{padding:8px 12px;border-radius:10px;background:var(--card);border:1px solid var(--line)}
+.lines li small{display:block;font-size:12px;color:var(--ts);font-weight:700}
+.lines li.tak{border-color:var(--acc);background:var(--acc-soft)}
+.lines li.tak small{color:var(--acc)}
+.lines li.aft{opacity:.92}
+.ask{font-size:18px;font-weight:700;margin:6px 0 10px}
+.ans label{display:block;font-size:13px;color:var(--sub);margin:10px 0 4px;font-weight:500}
+.ans textarea{display:block;width:100%;min-height:52px;border:1px solid var(--line);background:var(--card);border-radius:10px;padding:10px 12px;resize:vertical;font-size:15.5px}
+.ans textarea:focus{outline:2px solid var(--acc);outline-offset:-1px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:46px;padding:10px 16px;border-radius:12px;border:1px solid var(--line);background:var(--card);font-weight:700;text-decoration:none;color:var(--ink)}
+.btn.pri{background:var(--acc);border-color:var(--acc);color:var(--acc-ink)}
+.btn.wide{width:100%;margin-top:12px}
+.hide{display:none}
+.vbox{position:relative;width:100%;aspect-ratio:16/9;background:#000;border-radius:12px;overflow:hidden}
+.vbox img{width:100%;height:100%;object-fit:cover;opacity:.8}
+.vbox .pl{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:#fff;background:linear-gradient(transparent,rgba(0,0,0,.55));border:0;width:100%}
+.vbox .pl span{background:rgba(0,0,0,.6);padding:8px 14px;border-radius:10px;font-weight:700}
+.vbox iframe,.vbox video{position:absolute;inset:0;width:100%;height:100%;border:0}
+.vnote{font-size:13px;color:var(--sub);margin:6px 0 0}
+.vnote.on{color:var(--warn);font-weight:700}
+.kv{display:grid;grid-template-columns:96px 1fr;gap:6px 12px;font-size:15px}
+.kv dt{color:var(--ts);font-size:13px;font-weight:700;padding-top:2px}.kv dd{margin:0}
+ul.pts{margin:6px 0 0;padding-left:18px}ul.pts li{margin:3px 0}
+.warn{background:var(--warn-soft);border-color:transparent;color:var(--ink)}
+.warn b{color:var(--warn)}
+.tipb{background:var(--tip-soft);border-color:transparent}
+.status{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:10px}
+.status button{min-height:44px;border-radius:10px;border:1px solid var(--line);background:var(--card);font-size:13px;font-weight:700;padding:6px 4px}
+.status button.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.meta{font-size:12.5px;color:var(--ts);margin-top:18px;line-height:1.6}
+.filters{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin:12px 0}
+.filters select{min-height:42px;border:1px solid var(--line);border-radius:10px;background:var(--card);padding:6px 10px}
+.row{display:block;padding:12px 14px;margin:0 0 8px;background:var(--card);border:1px solid var(--line);border-radius:12px;text-decoration:none;color:var(--ink)}
+.row b{display:block;font-size:15.5px;line-height:1.45}.row .q{display:block;font-size:13.5px;color:var(--sub);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px;vertical-align:1px}
+.cmp{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.cmp .box{margin:0}.cmp>*{min-width:0}.app,main{min-width:0}
+.cmp h4{margin:0 0 6px;font-size:14px}
+.cmp .ok h4{color:var(--ok)}.cmp .ng h4{color:var(--warn)}
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:14.5px;min-width:560px}
+th,td{border-bottom:1px solid var(--line);padding:10px 8px;text-align:left;vertical-align:top}
+th{font-size:12.5px;color:var(--ts)}
+td:first-child{font-weight:700;white-space:nowrap}
+.foot{margin-top:30px;color:var(--sub);font-size:13px}
+@media (max-width:560px){h1{font-size:28px}.cmp{grid-template-columns:1fr}.kv{grid-template-columns:1fr}.kv dt{padding-top:6px}}
+</style></head>
+<body>
+<div class="app">
+ <div class="bar"><button class="back" id="back" aria-label="뒤로">‹</button><div class="t" id="ttl">훈련장</div><a class="home" href="index.html">책으로</a></div>
+ <main id="view"></main>
+</div>
+<script src="train-data.js"></script>
+<script>
+const $=s=>document.querySelector(s), esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const SC=TR.scenes, BY={}; SC.forEach(s=>BY[s.id]=s);
+const TN={}; TR.techs.forEach(t=>TN[t.no]=t);
+const mmss=x=>{x=Math.max(0,Math.round(x||0));return (x/60|0)+':'+String(x%60).padStart(2,'0')};
+// ---- 저장 (기존 tak.ch / tak.sc / tak.fs 와 다른 키)
+const store={get(k,d){try{return JSON.parse(localStorage.getItem(k))??d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+let ST=store.get('tak.tr.st',{}), ANS=store.get('tak.tr.ans',{});
+const SLAB={u:'아직 안 봄',k:'이해함',p:'연습 필요',a:'실전 적용해봄'};
+const stOf=id=>ST[id]||'u';
+function setSt(id,v){ST[id]=v;store.set('tak.tr.st',ST)}
+function progBar(list){const c={u:0,k:0,p:0,a:0};list.forEach(s=>c[stOf(s.id)]++);const n=list.length||1;
+ return '<div class="prog" title="이해함 '+c.k+' · 연습 필요 '+c.p+' · 실전 '+c.a+' · 안 봄 '+c.u+'">'+['a','k','p','u'].map(k=>'<i class="st-'+k+'" style="width:'+(c[k]/n*100)+'%"></i>').join('')+'</div>'}
+function chips(s){const o={'성공':'okc','실패':'fail','회복':'rec'}[s.outcome]||'';
+ return '<div class="chips">'+(s.main?'<span class="chip">'+s.main+' '+esc(TN[s.main].name)+'</span>':'')+(s.sub||[]).map(x=>'<span class="chip sub">'+esc(x)+'</span>').join('')+
+ (s.outcome&&s.outcome!=='중립'?'<span class="chip '+o+'">'+esc(s.outcome)+'</span>':'')+(s.origin==='신규'?'<span class="chip new">신규 · '+esc(s.program)+'</span>':'')+'</div>'}
+function row(s){const before=(s.lines||[]).slice(0,s.punch).map(l=>l.text).join(' / ');
+ return '<a class="row" href="#/scene/'+s.id+'"><b><span class="dot st-'+stOf(s.id)+'"></span>'+esc(s.title)+'</b><span class="q">'+esc(before||s.context)+'</span>'+chips(s)+'</a>'}
+const H=(t,html)=>{$('#ttl').textContent=t;$('#view').innerHTML=html;window.scrollTo(0,0)};
+
+// ---- 첫 화면: 학습 경로
+function vHome(){
+ const nNew=SC.filter(s=>s.origin==='신규').length, nV=Object.keys(TR.videos).length;
+ H('탁재훈론 · 훈련장',
+ '<div class="kicker">탁재훈론 · 훈련장</div><h1>보고 끝내지 말고,<br>말해 보고 복기한다</h1>'+
+ '<p class="lead">장면 '+SC.length+'개 (기존 '+(SC.length-nNew)+' · 신규 '+nNew+', 신규 영상 '+nV+'편). 상대의 말에서 멈추고, 내 답을 먼저 적고, 실제 반응과 비교합니다.</p>'+
+ '<p class="motto">탁재훈이 한 말을 외우는 것이 아니라, 그 말 직전에 무엇을 보고 어떤 가능성을 발견했는지 공부한다.</p>'+
+ progBar(SC)+'<p class="meta" style="margin-top:6px">내 진도: 이해함 '+SC.filter(s=>stOf(s.id)==='k').length+' · 연습 필요 '+SC.filter(s=>stOf(s.id)==='p').length+' · 실전 적용 '+SC.filter(s=>stOf(s.id)==='a').length+' / '+SC.length+'</p>'+
+ [['1','처음부터 공부하기','책(카드) 1~8장을 순서대로 — 개념과 기존 분석','index.html'],
+  ['2','11가지 기술별 공부','기술마다 설명 · 대표 영상 · 장면 수 · 난이도 · 주의할 점','#/tech'],
+  ['3','실제 상황별 공부','놀림받았을 때, 불리한 질문, 처음 만난 사람, 굳은 분위기…','#/sit'],
+  ['4','영상 장면 모아보기','기술 · 상황 · 결과 · 진도로 걸러 보기','#/list'],
+  ['5','실전 문제 풀기','상대의 말에서 멈추고 → 세 가지 답 → 정답 공개 → 해설','#/drill'],
+  ['6','성공 · 실패 비교하기','비슷한 기술이 통한 장면과 안 통한 장면을 나란히','#/compare'],
+  ['7','같은 사람, 3년 뒤','김예원 2023 ↔ 2026 — 관계가 바뀌면 농담이 어떻게 바뀌나','#/kim'],
+  ['8','원리 · 실패 점검표','분석좌 영상에서 원고가 놓친 이론 7개와, 위트가 실패하는 조건 9개','#/theory']]
+ .map(x=>'<a class="tile" href="'+x[3]+'"><span class="no">'+x[0]+'</span><span class="tx"><b>'+x[1]+'</b><span class="s">'+x[2]+'</span></span></a>').join('')+
+ '<div class="box"><b>내 답 모아 보기</b><p class="lead" style="margin:4px 0 8px">실전 문제에서 적은 답은 이 기기의 브라우저에만 저장됩니다. 다른 기기로 옮기려면 복사하세요.</p><button class="btn" id="exp">내 답 전부 복사</button> <span id="expm" class="meta"></span></div>'+
+ '<p class="foot">원본 영상은 각 방송사·유튜브 채널의 것입니다. 신규 장면은 공식 유튜브 영상을 그 자리에서 재생하며, 대사는 유튜브 자동 자막과 대조했습니다(귀로 다시 확인 전인 장면은 표시). 공부용 · 비공개.</p>');
+ $('#exp').onclick=()=>{const out=[];SC.forEach(s=>{const a=ANS[s.id];if(!a)return;const t=[a.a1,a.a2,a.a3].filter(Boolean);if(!t.length)return;out.push('['+s.title+'] '+(SLAB[stOf(s.id)])+'\n- 평범: '+(a.a1||'')+'\n- 위트: '+(a.a2||'')+'\n- 다른 기술: '+(a.a3||''))});
+  const txt=out.join('\n\n')||'(아직 적은 답이 없습니다)';navigator.clipboard.writeText(txt).then(()=>$('#expm').textContent='복사했습니다',()=>{$('#expm').textContent='복사가 막혔습니다. 아래를 직접 복사하세요.';const ta=document.createElement('textarea');ta.value=txt;ta.style.cssText='width:100%;height:140px';$('#expm').after(ta)})};
+}
+
+// ---- 기술별
+function vTechs(){
+ H('11가지 기술','<h1>11가지 기술</h1><p class="lead">장면이 많아질수록 패턴이 보이도록, 기술마다 장면을 모았습니다. 한 장면에 여러 기술이 섞이면 주 기술로 분류하고 보조 기술은 작은 표로 붙였습니다.</p>'+
+ TR.techs.map(t=>{const ss=SC.filter(s=>s.main===t.no);return '<a class="tile" href="#/tech/'+encodeURIComponent(t.no)+'"><span class="no">'+t.no+'</span><span class="tx"><b>'+esc(t.name)+'</b><span class="s">'+esc(t.rule)+'</span><span class="m">장면 '+ss.length+'개'+(t.difficulty?' · 난이도 '+t.difficulty:'')+' · 신규 '+ss.filter(s=>s.origin==='신규').length+'</span>'+progBar(ss)+'</span></a>'}).join(''))}
+function vTech(no){const t=TN[no];if(!t)return vTechs();const ss=SC.filter(s=>s.main===no), side=SC.filter(s=>s.main!==no&&(s.sub||[]).includes(t.name));
+ const rep=ss.find(s=>s.origin==='기존'&&s.mp4)||ss[0];
+ H(no+' '+t.name,'<div class="kicker">기술 '+no+'</div><h1>'+esc(t.name)+'</h1><p class="motto">'+esc(t.rule)+'</p>'+
+ (t.concept?'<div class="box"><p style="margin:0">'+esc(t.concept)+'</p></div>':'')+
+ (rep?'<h3>대표 장면</h3>'+row(rep):'')+
+ '<a class="btn pri wide" href="#/drill/'+encodeURIComponent(no)+'">이 기술로 실전 문제 풀기 ('+ss.length+')</a>'+
+ (t.tips.length?'<h3>써먹기</h3>'+t.tips.map(x=>'<div class="box tipb">'+esc(x)+'</div>').join(''):'')+
+ (t.cautions.length?'<h3>주의할 점</h3>'+t.cautions.map(x=>'<div class="box warn">'+esc(x)+'</div>').join(''):'')+
+ '<h3>장면 '+ss.length+'개</h3>'+progBar(ss)+'<div style="margin-top:10px">'+ss.map(row).join('')+'</div>'+
+ (side.length?'<h3>보조 기술로 쓰인 장면</h3>'+side.map(row).join(''):''))}
+
+// ---- 상황별
+function sitScenes(name){const tech=new Set(TR.sit_techs[name]||[]);const own=SC.filter(s=>(s.situations||[]).includes(name));const by=SC.filter(s=>!own.includes(s)&&tech.has(s.main)&&s.origin==='기존');return {own,by,tech:[...tech]}}
+function vSits(){H('상황별','<h1>실제 상황별</h1><p class="lead">기술 이름보다 "지금 무슨 상황인가"에서 출발합니다. 상황을 고르면 처방(기술)과 장면이 나옵니다.</p>'+
+ TR.sit_order.map((n,i)=>{const r=sitScenes(n);return '<a class="tile" href="#/sit/'+i+'"><span class="no">'+(i+1)+'</span><span class="tx"><b>'+esc(n)+'</b><span class="m">실제 장면 '+r.own.length+' · 처방 기술 장면 '+r.by.length+'</span></span></a>'}).join(''))}
+function vSit(i){const n=TR.sit_order[i];if(!n)return vSits();const r=sitScenes(n);const rx=TR.situations.filter(x=>x.name===n);
+ H(n,'<div class="kicker">상황</div><h1>'+esc(n)+'</h1>'+
+ rx.map(x=>'<div class="box"><b>처방</b> '+esc(x.rx)+(x.ex?'<p class="meta" style="margin:6px 0 0">써먹는 예(지어낸 것): '+esc(x.ex)+'</p>':'')+'</div>').join('')+
+ (r.tech.length?'<div class="chips">'+r.tech.map(t=>'<a class="chip" href="#/tech/'+encodeURIComponent(t)+'" style="text-decoration:none">'+t+' '+esc(TN[t].name)+'</a>').join('')+'</div>':'')+
+ '<h3>이 상황이 실제로 나온 장면 ('+r.own.length+')</h3>'+(r.own.map(row).join('')||'<p class="lead">아직 태그된 장면이 없습니다.</p>')+
+ (r.by.length?'<h3>처방 기술이 쓰인 장면 ('+r.by.length+')</h3>'+r.by.map(row).join(''):''))}
+
+// ---- 모아보기
+function vList(){const q=new URLSearchParams(location.hash.split('?')[1]||'');
+ const sel=(id,opts,v)=>'<select id="'+id+'">'+opts.map(o=>'<option value="'+esc(o[0])+'"'+(o[0]===v?' selected':'')+'>'+esc(o[1])+'</option>').join('')+'</select>';
+ const f={t:q.get('t')||'',s:q.get('s')||'',o:q.get('o')||'',g:q.get('g')||'',st:q.get('st')||''};
+ const L=SC.filter(s=>(!f.t||s.main===f.t||(s.sub||[]).includes(f.t))&&(!f.s||(s.situations||[]).includes(f.s))&&(!f.o||s.outcome===f.o)&&(!f.g||s.origin===f.g)&&(!f.st||stOf(s.id)===f.st));
+ const subs=[...new Set(SC.flatMap(s=>s.sub||[]))];
+ H('장면 모아보기','<h1>장면 모아보기</h1><div class="filters">'+
+  sel('ft',[['','기술 · 태그 전체']].concat(TR.techs.map(t=>[t.no,t.no+' '+t.name])).concat(subs.map(x=>[x,'# '+x])),f.t)+
+  sel('fs',[['','상황 전체']].concat(TR.sit_order.map(x=>[x,x])),f.s)+
+  sel('fo',[['','결과 전체'],['성공','성공'],['실패','실패'],['회복','회복'],['중립','중립']],f.o)+
+  sel('fg',[['','출처 전체'],['기존','기존 장면'],['신규','신규 (유튜브)']],f.g)+
+  sel('fst',[['','진도 전체']].concat(Object.entries(SLAB)),f.st)+'</div><p class="meta">'+L.length+'개</p>'+L.map(row).join(''));
+ ['ft','fs','fo','fg','fst'].forEach(id=>$('#'+id).onchange=()=>{const p=new URLSearchParams();[['t','ft'],['s','fs'],['o','fo'],['g','fg'],['st','fst']].forEach(([k,i])=>{const v=$('#'+i).value;if(v)p.set(k,v)});location.hash='#/list'+(p.toString()?'?'+p:'')})}
+
+// ---- 장면 (상대의 말에서 멈추기)
+let YTP=null,ytReady=null,watch=0;
+function loadYT(){if(ytReady)return ytReady;ytReady=new Promise(r=>{window.onYouTubeIframeAPIReady=r;const s=document.createElement('script');s.src='https://www.youtube.com/iframe_api';document.head.appendChild(s)});return ytReady}
+function videoHTML(s){
+ if(s.src==='yt')return '<div class="vbox" id="vb"><img src="https://i.ytimg.com/vi/'+s.vid+'/hqdefault.jpg" alt=""><button class="pl" id="vplay"><span>▶ 상대의 말부터 재생 ('+mmss(s.start)+')</span></button></div>'+
+  '<p class="vnote" id="vn">답이 나오는 '+mmss(s.answer)+' 직전에 자동으로 멈추도록 해 두었습니다. 기기에 따라 늦거나 안 멈출 수 있으니, 그때는 직접 멈추세요. · <a href="'+esc(s.url)+'" target="_blank" rel="noopener">유튜브에서 보기 ↗</a></p>';
+ if(s.mp4)return '<div class="vbox"><video controls playsinline preload="none" poster="'+esc(s.poster)+'" src="'+esc(s.mp4)+'"></video></div><p class="vnote">상대가 말을 꺼내기 몇 초 전부터 시작합니다. 탁재훈의 말이 나오기 전에 직접 멈추세요.</p>';
+ return ''}
+function mountYT(s,stop){const vb=$('#vb');if(!vb)return;vb.innerHTML='<div id="ytp"></div>';
+ loadYT().then(()=>{YTP=new YT.Player('ytp',{videoId:s.vid,playerVars:{start:Math.floor(s.start),playsinline:1,rel:0,autoplay:1},events:{
+  onReady:e=>e.target.playVideo(),
+  onStateChange:e=>{clearInterval(watch);if(e.data===YT.PlayerState.PLAYING&&stop()){watch=setInterval(()=>{try{const t=YTP.getCurrentTime();if(t>=s.answer-0.4&&t<s.answer+3&&stop()){YTP.pauseVideo();clearInterval(watch);stopped=true;const n=$('#vn');if(n){n.classList.add('on');n.innerHTML='여기서 멈췄습니다 ('+mmss(t)+'). 나라면 뭐라고 할까요? 답을 적은 뒤 「정답 보기」를 누르세요. 다시 재생하면 끝까지 이어집니다.'}}}catch(x){}},150)}}}})})}
+let stopped=false;
+function vScene(id,drill){const s=BY[id];if(!s)return vHome();stopped=false;
+ const before=s.lines.slice(0,s.punch), punch=s.lines[s.punch], after=s.lines.slice(s.punch+1);
+ const a=ANS[s.id]||{};
+ const li=(l,cls)=>'<li class="'+cls+'">'+(l.who?'<small>'+esc(l.who)+'</small>':'')+esc(l.text)+'</li>';
+ const nextId=drill?pickNext(drill,s.id):null;
+ H(drill?'실전 문제':s.title,
+ (drill?'<div class="kicker">실전 문제 · '+(drill==='all'?'전체':drill+' '+esc(TN[drill]?.name||''))+'</div>':'')+'<h2 style="margin-top:18px" id="stitle">'+(drill?'이 상황에서 나라면?':esc(s.title))+'</h2>'+(drill?'<p class="meta" style="margin:0">'+esc(s.program||s.chname||'')+' — 제목과 기술은 정답을 본 뒤 공개됩니다</p>':chips(s))+
+ '<div class="step"><b>1</b>당시 상황</div><div class="box">'+esc(s.context||'—')+(s.relation?'<p class="meta" style="margin:6px 0 0">관계: '+esc(s.relation)+'</p>':'')+'</div>'+
+ '<div class="step"><b>2</b>상대의 직전 말</div>'+(before.length?'<ul class="lines">'+before.map(l=>li(l,'')).join('')+'</ul>':'<p class="lead">이 장면은 탁재훈이 먼저 말을 꺼냅니다. 위 상황만 보고, 나라면 무슨 말로 시작할지 생각해 보세요.</p>')+
+ '<div class="step"><b>3</b>나라면 뭐라고 할까?</div><p class="ask">'+esc(s.prompt||'여기서 멈추세요. 내가 저 자리에 있었다면 뭐라고 받았을까요?')+'</p>'+
+ '<div class="step"><b>4</b>내 답 — 세 가지로</div><div class="ans">'+
+ '<label for="a1">평범한 반응</label><textarea id="a1" placeholder="보통 사람이라면…">'+esc(a.a1||'')+'</textarea>'+
+ '<label for="a2">위트 있는 반응</label><textarea id="a2" placeholder="전제를 바꾸거나, 단어를 집거나…">'+esc(a.a2||'')+'</textarea>'+
+ '<label for="a3">다른 기술을 쓴 반응</label><textarea id="a3" placeholder="①~⑪ 중 다른 기술로">'+esc(a.a3||'')+'</textarea></div>'+
+ '<button class="btn pri wide" id="reveal">정답 보기 — 실제 반응</button>'+
+ '<div id="rv" class="hide">'+
+  '<div class="step"><b>5</b>실제 반응</div><ul class="lines">'+(punch?li(punch,'tak'):'')+after.map(l=>li(l,'aft')).join('')+'</ul>'+
+  (s.reaction?'<p class="meta">그 뒤: '+esc(s.reaction)+'</p>':'')+
+ '</div>'+
+ (s.src==='yt'||s.mp4?'<div class="step"><b>6</b>영상</div>'+videoHTML(s):'')+
+ '<div id="rv2" class="hide">'+
+  '<div class="step"><b>7</b>기술 해설</div>'+(drill?chips(s):'')+'<div class="box">'+
+   (s.material?'<dl class="kv"><dt>재료</dt><dd>'+esc(s.material)+'</dd><dt>바꾼 것</dt><dd>'+esc(s.shift)+'</dd><dt>왜 통했나</dt><dd>'+esc(s.why)+'</dd>'+(s.timing?'<dt>타이밍</dt><dd>'+esc(s.timing)+'</dd>':'')+(s.length?'<dt>길이</dt><dd>'+esc(s.length)+(s.laugh?' · '+esc(s.laugh):'')+'</dd>':'')+'</dl>':'<p style="margin:0">'+esc(s.why||'—')+'</p>')+
+   ((s.points||[]).length?'<ul class="pts">'+s.points.map(p=>'<li>'+esc(p)+'</li>').join('')+'</ul>':'')+'</div>'+
+  ((s.when_ok||s.when_not||s.safety)?'<div class="step"><b>8</b>주의</div><div class="box warn">'+(s.when_ok?'<p style="margin:0 0 6px"><b>통하는 때</b> '+esc(s.when_ok)+'</p>':'')+(s.when_not?'<p style="margin:0"><b>쓰지 말 때</b> '+esc(s.when_not)+'</p>':'')+(s.safety&&s.safety!=='안전'?'<p class="meta" style="margin:6px 0 0">수위: '+esc(s.safety)+'</p>':'')+'</div>':'')+
+ '</div>'+
+ '<div class="step"><b>✓</b>내 진도</div><div class="status">'+Object.entries(SLAB).map(([k,v])=>'<button data-st="'+k+'" class="'+(stOf(s.id)===k?'on':'')+'">'+v+'</button>').join('')+'</div>'+
+ (drill?'<a class="btn pri wide" href="#/drill/'+encodeURIComponent(drill)+'?after='+s.id+'">다음 문제 →</a>':'')+
+ (s.main&&!drill?'<a class="btn wide" href="#/tech/'+encodeURIComponent(s.main)+'">'+s.main+' '+esc(TN[s.main].name)+' 다른 장면</a>':'')+
+ '<p class="meta">'+(s.src==='yt'?esc(s.program)+' '+esc(s.episode)+' · 「'+esc(s.vtitle)+'」<br>원본 '+mmss(s.start)+' 시작 · '+mmss(s.answer)+' 답 · '+mmss(s.end)+' 끝 · 대사: '+esc(s.quote_check)+' · 화자: '+esc(s.speaker_conf)+'<br><a href="'+esc(s.url)+'" target="_blank" rel="noopener">'+esc(s.meta.source_url)+'</a>':'기존 장면 · '+esc(s.chname)+(s.spec?' · 클립 '+esc(s.spec):'')+' · 대사: Whisper 전사 대조')+'</p>');
+ const save=()=>{ANS[s.id]={a1:$('#a1').value,a2:$('#a2').value,a3:$('#a3').value,d:Date.now()};store.set('tak.tr.ans',ANS)};
+ ['a1','a2','a3'].forEach(i=>$('#'+i).addEventListener('input',save));
+ $('#reveal').onclick=()=>{if(drill)$('#stitle').textContent=s.title;$('#rv').classList.remove('hide');$('#rv2').classList.remove('hide');$('#reveal').classList.add('hide');stopped=true;if(stOf(s.id)==='u'){setSt(s.id,'k');document.querySelectorAll('.status button').forEach(b=>b.classList.toggle('on',b.dataset.st==='k'))}};
+ const vp=$('#vplay');if(vp)vp.onclick=()=>mountYT(s,()=>!stopped&&$('#rv').classList.contains('hide'));
+ document.querySelectorAll('.status button').forEach(b=>b.onclick=()=>{setSt(s.id,b.dataset.st);document.querySelectorAll('.status button').forEach(x=>x.classList.toggle('on',x===b))});
+}
+// 실전 문제: 연습 필요 → 안 봄 → 나머지, 신규·별 많은 순
+function pool(tech){return SC.filter(s=>(tech==='all'||s.main===tech)&&s.lines&&s.lines.length>s.punch&&s.punch>0)}
+function pickNext(tech,after){const P=pool(tech);const rank=s=>({p:0,u:1,k:2,a:3}[stOf(s.id)]);const L=[...P].sort((a,b)=>rank(a)-rank(b)||(b.stars||0)-(a.stars||0));
+ if(!after)return L[0]?.id;const i=L.findIndex(s=>s.id===after);return (L[i+1]||L[0])?.id}
+function vDrill(tech,after){tech=tech||'all';const P=pool(tech);
+ if(!after&&!location.hash.includes('go')){
+  H('실전 문제','<h1>실전 문제</h1><p class="lead">상황과 상대의 말만 보고, 정답을 보기 전에 세 가지 답을 먼저 적습니다. 정답을 맞히는 문제가 아니라 선택지를 넓히는 훈련입니다. "연습 필요"로 표시한 장면이 먼저 나옵니다.</p>'+
+  '<a class="tile" href="#/drill/all?go=1"><span class="no">∞</span><span class="tx"><b>전체에서 풀기</b><span class="m">'+pool('all').length+'문제</span>'+progBar(pool('all'))+'</span></a>'+
+  TR.techs.map(t=>{const p=pool(t.no);return p.length?'<a class="tile" href="#/drill/'+encodeURIComponent(t.no)+'?go=1"><span class="no">'+t.no+'</span><span class="tx"><b>'+esc(t.name)+'</b><span class="m">'+p.length+'문제</span>'+progBar(p)+'</span></a>':''}).join(''));return}
+ const id=pickNext(tech,after);if(!id)return vDrill();vScene(id,tech)}
+
+// ---- 성공·실패 비교
+function vCompare(){const fails=SC.filter(s=>s.outcome==='실패'||s.outcome==='회복');
+ H('성공 · 실패 비교','<h1>성공 · 실패 비교</h1><p class="lead">같은 기술이 어떤 때 통하고 어떤 때 막히는지. 실패는 실패로 적었습니다.</p>'+
+ (TR.pairs||[]).map(p=>{const A=BY[p.ok],B=BY[p.ng];if(!A||!B)return '';const col=(s,c,h)=>'<div class="box '+c+'"><h4>'+h+'</h4><b>'+esc(s.title)+'</b><p class="meta" style="margin:4px 0">'+esc(s.relation||s.chname||'')+'</p><p style="margin:0;font-size:14.5px">'+esc((s.lines[s.punch]||{}).text||'')+'</p><p class="meta" style="margin:6px 0 0">'+esc(s.reaction||'')+'</p><a href="#/scene/'+s.id+'">장면 열기 →</a></div>';
+  return '<h3>'+esc(p.title)+'</h3><div class="cmp">'+col(A,'ok','통함')+col(B,'ng',B.outcome==='회복'?'막혔다가 회복':'안 통함')+'</div><div class="box tipb"><b>차이가 난 이유</b> '+esc(p.reason)+'</div>'}).join('')+
+ '<h3>실패 · 회복 장면 모두 ('+fails.length+')</h3>'+fails.map(row).join(''))}
+
+// ---- 김예원 2023 ↔ 2026
+function vKim(){const K=TR.kim;if(!K)return H('김예원 비교','<p class="lead">비교 자료를 준비 중입니다.</p>');
+ const s23=SC.filter(s=>s.vid==='PwHlMZf_nNo'),s26=SC.filter(s=>s.vid==='3V77rNVtqB4');
+ H('같은 사람, 3년 뒤','<div class="kicker">영상 비교</div><h1>'+esc(K.title||'김예원 2023 ↔ 2026')+'</h1><p class="lead">'+esc(K.overview||'')+'</p>'+
+ '<div class="tbl"><table><thead><tr><th>비교</th><th>2023 · 시즌2 EP.50</th><th>2026 · 시즌4 EP.54</th></tr></thead><tbody>'+(K.axes||[]).map(a=>'<tr><td>'+esc(a.axis)+'</td><td>'+esc(a.y2023)+'</td><td>'+esc(a.y2026)+'</td></tr><tr><td></td><td colspan="2" style="color:var(--acc);font-size:14px">→ '+esc(a.insight)+'</td></tr>').join('')+'</tbody></table></div>'+
+ ((K.callbacks||[]).length?'<h3>3년 전을 다시 꺼낸 대목 (콜백)</h3>'+K.callbacks.map(c=>'<div class="box"><p class="meta" style="margin:0 0 6px">2026 · '+mmss(c.sec_2026)+' · 2023년의 「'+esc(c.refers_to)+'」</p><ul class="lines">'+(c.lines||[]).map(l=>'<li>'+(l.who?'<small>'+esc(l.who)+'</small>':'')+esc(l.text)+'</li>').join('')+'</ul><p style="margin:8px 0 0;font-size:14.5px">'+esc(c.note||'')+'</p><a href="https://www.youtube.com/watch?v=3V77rNVtqB4&t='+Math.floor(c.sec_2026)+'s" target="_blank" rel="noopener">유튜브에서 이 부분 보기 ↗</a></div>').join(''):'')+
+ ((K.takeaways||[]).length?'<h3>배울 점</h3><ul class="pts">'+K.takeaways.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul>':'')+
+ '<div class="cmp" style="margin-top:18px"><div><h3>2023 장면</h3>'+s23.map(row).join('')+'</div><div><h3>2026 장면</h3>'+s26.map(row).join('')+'</div></div>')}
+
+
+// ---- 원리 · 실패 점검표 (분석좌 보완)
+function vTheory(){const X=TR.theory;if(!X)return H('원리','<p class="lead">준비 중입니다.</p>');
+ const yt=s=>'<a href="https://www.youtube.com/watch?v=ldVoy1xfW7Q&t='+Math.floor(s)+'s" target="_blank" rel="noopener">'+mmss(s)+' ↗</a>';
+ H('원리 · 실패 점검표','<div class="kicker">분석좌 영상 다시 보기</div><h1>원리 · 실패 점검표</h1><p class="lead">이미 1장에 쓴 분석좌의 이론에서, 원고가 놓친 설명만 모았습니다. 「예」로 든 문장은 분석좌가 설명하려고 만든 예시이고, 따옴표는 영상 속 실제 말(자동 전사)입니다.</p>'+
+ (X.additions||[]).map(a=>'<div class="box"><div class="chips" style="margin:0 0 6px"><span class="chip">'+esc(a.topic)+'</span><span class="chip sub">'+esc(a.where||'')+'</span></div><p style="margin:0 0 6px">'+esc(a.point)+'</p>'+(a.quote?'<p class="meta" style="margin:0">"'+esc(a.quote)+'" · '+yt(a.sec)+'</p>':'')+'</div>').join('')+
+ '<h2>위트가 실패하는 조건</h2><p class="lead">내 답을 적은 뒤 이 목록으로 점검합니다.</p>'+
+ (X.failure_conditions||[]).map((f,i)=>'<div class="box warn"><b>'+(i+1)+'</b> '+esc(typeof f==='string'?f:(f.condition||JSON.stringify(f)))+'</div>').join(''))}
+
+// ---- 라우터 (뒤로 가기 지원)
+function route(){clearInterval(watch);const h=decodeURIComponent(location.hash.replace(/^#\/?/,'')).split('?')[0];const [a,b]=h.split('/');const q=new URLSearchParams(location.hash.split('?')[1]||'');
+ if(a==='tech')b?vTech(b):vTechs();else if(a==='sit')b?vSit(+b):vSits();else if(a==='list')vList();else if(a==='scene')vScene(b);
+ else if(a==='drill')vDrill(b,q.get('after'));else if(a==='compare')vCompare();else if(a==='kim')vKim();else if(a==='theory')vTheory();else vHome();
+ $('#back').style.visibility=a?'visible':'hidden'}
+$('#back').onclick=()=>{history.length>1?history.back():location.hash='#/'};
+addEventListener('hashchange',route);route();
+</script>
+</body></html>

@@ -210,7 +210,7 @@ function renderHome(){
   }).join('');
   $('#home').innerHTML = `
     <div class="hero"><div class="kicker">말을 받아치는 기술 연구 노트</div><h1>탁재훈론</h1><p>장을 눌러 위아래로 읽습니다. 영상은 상대의 말이 끝난 곳에서 한 번 멈추고, 내 답을 먼저 해 보세요.</p></div>
-    ${resume}<button class="intro" data-go="0">이 노트를 읽는 법 ›</button>${tiles}
+    ${resume}<a class="resume" href="train.html" style="text-decoration:none;background:var(--card);color:var(--ink);border:2px solid var(--acc)"><span><small style="color:var(--acc)">훈련장 · 상대의 말에서 멈추고 직접 답하기</small>기술별 · 상황별 · 실전 문제 · 성공/실패 비교</span><span>›</span></a><button class="intro" data-go="0">이 노트를 읽는 법 ›</button>${tiles}
     <p class="foot">개인 공부용 노트입니다. 영상은 각 방송사와 유튜브 채널의 것이며, 음성인식으로 받아 적은 글이라 틀린 곳이 있을 수 있습니다.<br><a href="book.html">8개 장을 한 페이지로 이어 읽기 ›</a></p>`;
 }
 
